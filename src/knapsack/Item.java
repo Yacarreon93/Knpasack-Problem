@@ -26,10 +26,10 @@ public class Item {
         this.weight = weight;
     }
     
-    public float getRealValue() {
-        float realValue;
+    public double getRealValue() {
+        double realValue;
         if(weight > 0) {
-            realValue = (float)(value / weight);
+            realValue = (double)value / (double)weight;
         } else {
             realValue = value;
         }        
