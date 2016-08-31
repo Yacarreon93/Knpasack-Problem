@@ -2,20 +2,20 @@ package knapsack;
 
 public class Item {
     
-    private int value;
+    private int utility;
     private int weight;
     
-    public Item(int v, int w) {
-        value = v;
+    public Item(int u, int w) {
+        utility = u;
         weight = w;
     }
     
-    public int getValue() {
-        return value;
+    public int getUtility() {
+        return utility;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setUtility(int utility) {
+        this.utility = utility;
     } 
     
     public int getWeight() {
@@ -26,14 +26,14 @@ public class Item {
         this.weight = weight;
     }
     
-    public double getRealValue() {
-        double realValue;
+    public double getValue() {
+        double value;
         if(weight > 0) {
-            realValue = (double)value / (double)weight;
+            value = (double)utility / (double)weight;
         } else {
-            realValue = value;
+            value = utility;
         }        
-        return realValue;
+        return value;
     }
     
 }
