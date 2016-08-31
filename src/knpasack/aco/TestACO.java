@@ -35,17 +35,17 @@ public class TestACO {
     }
     
     private static void initItems() {
-        int v, w;
+        int u, w;
         items = new Item[numItems];
         pheromone = new double[numItems];
         for(int i = 0; i < numItems; i++) {
             System.out.println("Object " + (i + 1) + "");
-            System.out.print("Insert value: ");
-            v = sc.nextInt();            
+            System.out.print("Insert utility: ");
+            u = sc.nextInt();            
             System.out.print("Insert weight: ");
             w = sc.nextInt();
             System.out.println("-------------- ");
-            items[i] = new Item(v, w);
+            items[i] = new Item(u, w);
             pheromone[i] = INITIAL_PHEROMONE;
         }        
     }
@@ -131,7 +131,7 @@ public class TestACO {
     
     public static double getItemProb(int idItem) {        
         double prob;
-        prob = Math.pow(pheromone[idItem], ALPHA) * Math.pow(items[idItem].getRealValue(), BETA);
+        prob = Math.pow(pheromone[idItem], ALPHA) * Math.pow(items[idItem].getValue(), BETA);
         return prob;
     }
     
