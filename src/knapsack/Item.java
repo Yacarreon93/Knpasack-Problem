@@ -28,7 +28,11 @@ public class Item {
     
     public float getRealValue() {
         float realValue;
-        realValue = value / weight;
+        if(weight > 0) {
+            realValue = (float)(value / weight);
+        } else {
+            realValue = value;
+        }        
         return realValue;
     }
     
