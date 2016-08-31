@@ -24,6 +24,7 @@ public class TestACO {
         initItems();
         for (int i = 0; i < numLoops; i++) {
             initAnts();
+            printTabuList();
         }         
     }
     
@@ -49,6 +50,19 @@ public class TestACO {
             tabuList[i][0] = getRandomItem();
         }
     }  
+    
+    public static void printTabuList() {
+        System.out.println("---------");
+        System.out.println("Tabu List");
+        System.out.println("---------");
+        for (int i = 0; i < numAnts; i++) {
+            System.out.print(i + 1 + ":\t");
+            for (int j = 0; j < numItems; j++) {
+                System.out.print(tabuList[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
     
     private static int getRandomItem() {
         Random random = new Random();
