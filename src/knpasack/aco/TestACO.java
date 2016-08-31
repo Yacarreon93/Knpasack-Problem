@@ -1,14 +1,12 @@
 package knpasack.aco;
 
-/**
- *
- * @author yacar
- */
-public class TestACO {
+import knapsack.Item;
 
-    /**
-     * @param args the command line arguments
-     */
+public class TestACO {
+    
+    private static int numItems;
+    private static Item[] items;
+
     public static void main(String[] args) {
         // TODO code application logic here
     }
