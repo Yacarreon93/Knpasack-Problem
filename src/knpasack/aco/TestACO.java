@@ -48,6 +48,9 @@ public class TestACO {
         tabuList = new int[numAnts][numItems];
         for (int i = 0; i < numAnts; i++) {
             tabuList[i][0] = getRandomItem();
+            for (int j = 1; j < numItems; j++) {
+                tabuList[i][j] = -1;
+            }
         }
     }  
     
