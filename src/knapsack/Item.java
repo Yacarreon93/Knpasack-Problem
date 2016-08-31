@@ -9,14 +9,28 @@ public class Item {
         value = v;
         weight = w;
     }
-
+    
     public int getValue() {
         return value;
     }
 
     public void setValue(int value) {
         this.value = value;
-    }  
+    } 
+    
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+    
+    public float getRealValue() {
+        float realValue;
+        realValue = value / weight;
+        return realValue;
+    }
     
 }
     
