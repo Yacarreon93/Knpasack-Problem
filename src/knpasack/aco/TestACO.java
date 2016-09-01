@@ -70,17 +70,21 @@ public class TestACO {
         double[] tempPheromone = new double[numItems];        
         initTempPheromone(tempPheromone, pheromone);
         for (int i = 0; i < numAnts; i++) {
-            localWeight = items[tabuList[i][0]].getWeight();
-            pointerIndex = 1;
+            localWeight = items[tabuList[i][0]].getWeight();  
+            pointerIndex = 1;                                 
             while(localWeight < knapsackMaxCapacity && pointerIndex < numItems) {
                 probItems = new double[numItems];
                 probTotal = getItemsProb(probItems, i, localWeight);
                 normalize(probItems, probTotal);
                 selectedItem = selectItem(probItems);
-                tabuList[i][pointerIndex] = selectedItem;
-                updateTempPheromone(tempPheromone, selectedItem);
-                localWeight += items[selectedItem].getWeight();
-                pointerIndex++;
+                if(selectedItem > -1) {
+                    tabuList[i][pointerIndex] = selectedItem;
+                    updateTempPheromone(tempPheromone, selectedItem);
+                    localWeight += items[selectedItem].getWeight();             
+                    pointerIndex++;
+                } else {
+                    break;
+                }                
             }             
         }
         updatePheromone(pheromone, tempPheromone);
@@ -99,16 +103,18 @@ public class TestACO {
     }
     
     public static int selectItem(double[] probItems) {
-        int selectedItem = 0;        
+        int selectedItem = -1;        
         Random random = new Random();
         double probAcum = 0;
         for (int i = 0; i < probItems.length; i++) {
-            probAcum += probItems[i];
-            if(random.nextDouble() <= probAcum) {
-                selectedItem = i;
-                break;
-            }
-        }                      
+            if(probItems[i] > -1) {
+                probAcum += probItems[i];
+                if(random.nextDouble() <= probAcum) {
+                    selectedItem = i;
+                    break;
+                }
+            }            
+        }
         return selectedItem;
     }
     
@@ -145,7 +151,9 @@ public class TestACO {
     
     public static void normalize(double[] values, double total) {
         for (int i = 0; i < values.length; i++) {
-            values[i] = values[i] / total;
+            if(values[i] > -1){
+               values[i] = values[i] / total; 
+            }            
         }
     }
     
@@ -168,7 +176,10 @@ public class TestACO {
     
     private static int getRandomItem() {
         Random random = new Random();
-        int randomItem = (int)(random.nextDouble() * (numItems + 1));
+        int randomItem = (int)(random.nextDouble() * (numItems));
+        while(items[randomItem].getWeight() > knapsackMaxCapacity) {
+            randomItem = (int)(random.nextDouble() * (numItems));
+        }
         return randomItem;
     }
 }
