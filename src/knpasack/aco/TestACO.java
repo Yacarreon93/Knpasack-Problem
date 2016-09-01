@@ -70,11 +70,11 @@ public class TestACO {
         double[] tempPheromone = new double[numItems];        
         initTempPheromone(tempPheromone, pheromone);
         for (int i = 0; i < numAnts; i++) {
-            localWeight = 0;
+            localWeight = items[tabuList[i][0]].getWeight();
             pointerIndex = 1;
             while(localWeight < knapsackMaxCapacity && pointerIndex < numItems) {
                 probItems = new double[numItems];
-                probTotal = getItemsProb(probItems, i);
+                probTotal = getItemsProb(probItems, i, localWeight);
                 normalize(probItems, probTotal);
                 selectedItem = selectItem(probItems);
                 tabuList[i][pointerIndex] = selectedItem;
@@ -112,15 +112,14 @@ public class TestACO {
         return selectedItem;
     }
     
-    public static double getItemsProb(double[] probItems, int idAnt) {
+    public static double getItemsProb(double[] probItems, int idAnt, int limitWeight) {
         double probTotal = 0;
-        int localWeight = 0;
         for (int i = 0; i < probItems.length; i++) {
             probItems[i] = -1;
         }
         for (int i = 0; i < probItems.length; i++) {
-            if(localWeight + items[i].getWeight() <= knapsackMaxCapacity && isAvialable(i, idAnt)) {
-                localWeight += items[i].getWeight();
+            int debugWeight = items[i].getWeight();
+            if(limitWeight + items[i].getWeight() <= knapsackMaxCapacity && isAvialable(i, idAnt)) {
                 probItems[i] = getItemProb(i);
                 probTotal += probItems[i];
             } else {
@@ -134,7 +133,7 @@ public class TestACO {
         boolean isAvialable = false;
         Integer item = idItem;
         Integer[] list = Arrays.stream(tabuList[idAnt]).boxed().toArray( Integer[]::new );
-        isAvialable = Arrays.asList(list).contains(item);;
+        isAvialable = !Arrays.asList(list).contains(item);;
         return isAvialable;
     }
     
