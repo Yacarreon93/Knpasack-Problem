@@ -1,5 +1,6 @@
 package knpasack.aco;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;   
 import knapsack.Item;
@@ -29,7 +30,7 @@ public class TestACO {
         initItems();
         for (int i = 0; i < numLoops; i++) {
             initAnts();
-            buildSolutions();            
+            buildSolutions();
         }   
         printSolution();
     }
@@ -73,7 +74,7 @@ public class TestACO {
             pointerIndex = 1;
             while(localWeight < knapsackMaxCapacity && pointerIndex < numItems) {
                 probItems = new double[numItems];
-                probTotal = getItemsProb(probItems);
+                probTotal = getItemsProb(probItems, i);
                 normalize(probItems, probTotal);
                 selectedItem = selectItem(probItems);
                 tabuList[i][pointerIndex] = selectedItem;
@@ -111,22 +112,30 @@ public class TestACO {
         return selectedItem;
     }
     
-    public static double getItemsProb(double[] probItems) {
+    public static double getItemsProb(double[] probItems, int idAnt) {
         double probTotal = 0;
         int localWeight = 0;
         for (int i = 0; i < probItems.length; i++) {
             probItems[i] = -1;
         }
         for (int i = 0; i < probItems.length; i++) {
-            // if(localWeight + items[i].getWeight() <= knapsackMaxCapacity) {
-                // localWeight += items[i].getWeight();
+            if(localWeight + items[i].getWeight() <= knapsackMaxCapacity && isAvialable(i, idAnt)) {
+                localWeight += items[i].getWeight();
                 probItems[i] = getItemProb(i);
                 probTotal += probItems[i];
-            // } else {
-            //     continue;
-            // }
+            } else {
+                 continue;
+            }
         }
         return probTotal;
+    }
+    
+    public static boolean isAvialable(int idItem, int idAnt) {
+        boolean isAvialable = false;
+        Integer item = idItem;
+        Integer[] list = Arrays.stream(tabuList[idAnt]).boxed().toArray( Integer[]::new );
+        isAvialable = Arrays.asList(list).contains(item);;
+        return isAvialable;
     }
     
     public static double getItemProb(int idItem) {        
