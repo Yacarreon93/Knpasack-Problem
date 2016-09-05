@@ -1,4 +1,4 @@
-package knpasack.aco;
+package knapsack.aco;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -22,17 +22,26 @@ public class TestACO {
     
     private static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         numItems = 5;
         numAnts = 10;
         numLoops = 10;
-        knapsackMaxCapacity = 30;
-        initItems();
+        knapsackMaxCapacity = 30;   
+        boolean success = false;
+        initItems();        
         for (int i = 0; i < numLoops; i++) {
-            initAnts();
-            buildSolutions();
+            success = initAnts();
+            if(success) {
+                buildSolutions();
+            }
+            else {
+                System.out.println("ERROR: Doesn't exist any item capable to be included into the knapsack.");
+                break;
+            }
         }   
-        printSolution();
+        if(success) {
+            printSolution();
+        }         
     }
     
     private static void initItems() {
@@ -51,14 +60,24 @@ public class TestACO {
         }        
     }
     
-    private static void initAnts() {
+    private static boolean initAnts() {
         tabuList = new int[numAnts][numItems];
-        for (int i = 0; i < numAnts; i++) {
-            tabuList[i][0] = getRandomItem();
-            for (int j = 1; j < numItems; j++) {
-                tabuList[i][j] = -1;
+        boolean success = false;
+        for (int i = 0; i < numItems; i++) {            
+            if(items[i].getWeight() <= knapsackMaxCapacity) {
+                success = true;
+                break;
             }
         }
+        if(success) {
+            for (int i = 0; i < numAnts; i++) {
+                tabuList[i][0] = getRandomItem();
+                for (int j = 1; j < numItems; j++) {
+                    tabuList[i][j] = -1;
+                }
+            }
+        }         
+        return success;
     }  
     
     public static void buildSolutions() {
@@ -174,7 +193,7 @@ public class TestACO {
     }
     
     public static void printSolution() {
-        printTabuList();
+        printTabuList();        
     }
     
     private static int getRandomItem() {
