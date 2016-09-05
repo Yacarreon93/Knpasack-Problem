@@ -164,7 +164,10 @@ public class TestACO {
         for (int i = 0; i < numAnts; i++) {
             System.out.print(i + 1 + ":\t");
             for (int j = 0; j < numItems; j++) {
-                System.out.print(tabuList[i][j] + "\t");
+                if(tabuList[i][j] < 0) {
+                    break;
+                }
+                System.out.print((tabuList[i][j] + 1) + "\t");
             }
             System.out.println();
         }
