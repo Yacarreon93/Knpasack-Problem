@@ -193,7 +193,47 @@ public class TestACO {
     }
     
     public static void printSolution() {
-        printTabuList();        
+        double[] solutions = new double[numAnts];
+        printTabuList();       
+        for (int i = 0; i < numAnts; i++) {
+            solutions[i] = 0;
+            for (int j = 0; j < numItems; j++) {
+                if(tabuList[i][j] > -1) {
+                    solutions[i] += items[tabuList[i][j]].getValue();
+                } else {
+                    break;
+                }                
+            }            
+        }               
+        printBestSolution(solutions);        
+    }
+    
+    private static void printBestSolution(double[] solutions) {
+        double[] tempSolutions = new double[solutions.length];
+        System.arraycopy(solutions, 0, tempSolutions, 0, solutions.length);        
+        java.util.Arrays.sort(solutions);
+        System.out.println("-------------");
+        System.out.println("Best Solution");
+        System.out.println("-------------");
+        for (int i = 0; i < tempSolutions.length; i++) {
+            if(tempSolutions[i] == solutions[solutions.length - 1]){
+                System.out.println("Solution " + (i + 1) + ":");                 
+                double u = 0;
+                double w = 0;
+                for (int j = 0; j < numItems; j++) {
+                    if(tabuList[i][j] > -1) {
+                        u += items[tabuList[i][j]].getUtility();
+                        w += items[tabuList[i][j]].getWeight();
+                    } else {
+                        break;
+                    }                    
+                }                
+                System.out.println("U = " + u);
+                System.out.println("W = " + w);
+                System.out.println("F = " + tempSolutions[i]); 
+                break;
+            }
+        }             
     }
     
     private static int getRandomItem() {
